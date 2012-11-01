@@ -49,8 +49,15 @@ while (my $line = <HTML>) {
     #warn if there are tags not substituted
     print STDERR "\nWARNING - title contains HTML tags not substituted for LaTeX equivalents [$title]" if $title =~ /</;
 
+    #substitute smart quotes for plain quotes
+    $stripped =~ s/[‘’“”]/"/g;
+    $stripped =~ s/"+/"/g;
+    $title =~ s/[‘’“”]/"/g;
+    $title =~ s/"+/"/g;
+
     #store the stripped and corrected titles
     $title{$stripped} = $title;
+    print "\nStored\n\n$stripped\n\nfor\n\n$title\n";
   }
 }
 
