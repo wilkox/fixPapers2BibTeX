@@ -50,9 +50,6 @@ while (my $line = <HTML>) {
     my $stripped = $title;
     $stripped =~ s/<[^>]+>//g;
 
-    #warn if this stripped title has already been stored
-    print STDERR "\nWARNING - duplicate titles [$stripped]" if exists $title{$stripped};
-
     #substitute <i> tags for \emphs
     $title =~ s/<i>/\\emph\{/g;
     $title =~ s/<\/i>/\}/g;
@@ -69,6 +66,9 @@ while (my $line = <HTML>) {
     $stripped =~ s/"+/"/g;
     $title =~ s/[‘’“”]/"/g;
     $title =~ s/"+/"/g;
+
+    #warn if this stripped title has already been stored
+    print STDERR "\nWARNING - duplicate titles [$stripped]" if exists $title{$stripped};
 
     #store the stripped and corrected titles
     $title{$stripped} = $title;
