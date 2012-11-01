@@ -1,6 +1,21 @@
 #!/usr/bin/perl
 
+#Fixes a BibTeX file exported from Papers2 by restoring \emph
+# tags
+
+#written by David Wilkins <david@wilkox.org>
+
+#this script lives at https://github.com/wilkox/fixPapers2BibTeX
+
+#this software is released into the public domain. To the extent 
+# possible under law, all copyright and related or neighboring
+# rights are waived and permission is explicitly and irrevocably
+# granted to copy, modify, adapt, sell and distribute this software
+# in any way you choose.
+
 $USAGE = q/USAGE:
+
+  This script requires that you export your Papers2 library as a "Reference List" in the IEEE style - it uses this file to figure out where the \emph tags belong. Once you have your .bib and .html files ready, run the script with the following options:
 
   -h <filename> HTML file, produced by Papers2 exporting a Reference List in IEEE style
   -b <filename> BibTeX file you wish to repair tags for
@@ -57,7 +72,6 @@ while (my $line = <HTML>) {
 
     #store the stripped and corrected titles
     $title{$stripped} = $title;
-    print "\nStored\n\n$stripped\n\nfor\n\n$title\n";
   }
 }
 
@@ -81,7 +95,6 @@ while (my $line = <BIBTEX>) {
     }
 
     #replace the title with the substitute
-    print "\nReplacing:\n==\n\t$title\n==\nwith:\n==\n\t$title{$title}\n==\n";
     $line =~ s/$title/$title{$title}/;
     print OUT $line;
 
@@ -93,3 +106,5 @@ while (my $line = <BIBTEX>) {
 
 close BIBTEX;
 close OUT;
+
+print "\nFixed BibTeX file created at $outputFile\n";
