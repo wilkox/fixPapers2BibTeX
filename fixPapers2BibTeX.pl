@@ -87,6 +87,10 @@ while (my $line = <BIBTEX>) {
   if ($line =~ /^title/) {
     die "ERROR - could not parse BibTeX title line - are there line breaks in the title? [$line]" unless $line =~ /^title\s=\s\{\{(.+)\}\},\n/;
     my $title = $1;
+    my $rawTitle = quotemeta($title);
+    $title =~ s/\{//g;
+    $title =~ s/\}//g;
+    $title =~ s/_//g;
 
     #skip unless the title was stored with a substitute
     unless (exists $title{$title}) {
@@ -95,8 +99,12 @@ while (my $line = <BIBTEX>) {
     }
 
     #replace the title with the substitute
-    $line =~ s/$title/$title{$title}/;
-    print OUT $line;
+    if ($line =~ /$rawTitle/) {
+      $line =~ s/$rawTitle/$title{$title}/;
+      print OUT $line;
+    } else {
+        die "\nSomething went horribly wrong at $line\nrawTitle = $rawTitle";
+    }
 
   } else {
     print OUT $line;
