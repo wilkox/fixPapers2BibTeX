@@ -54,9 +54,13 @@ while (my $line = <HTML>) {
     $title =~ s/<i>/\\emph\{/g;
     $title =~ s/<\/i>/\}/g;
 
-    #substitute <sub> tags for $_{}$s
-    $title =~ s/<sub>/\$_\{/g;
-    $title =~ s/<\/sub>/\}\$/g;
+    #substitute <sub> tags for \textsubscript{}s
+    $title =~ s/<sub>/\\textsubscript\{/g;
+    $title =~ s/<\/sub>/\}/g;
+
+    #substitute <sup> tags for \textsuperscript{}s
+    $title =~ s/<sup>/\\textsuperscript\{/g;
+    $title =~ s/<\/sup>/\}/g;
 
     #warn if there are tags not substituted
     print STDERR "\nWARNING - title contains HTML tags not substituted for LaTeX equivalents [$title]" if $title =~ /</;
