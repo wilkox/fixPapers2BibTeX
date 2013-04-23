@@ -89,7 +89,7 @@ die ("ERROR - could not write to output file $outputFile") unless open(OUT, ">$o
 while (my $line = <BIBTEX>) {
 
   if ($line =~ /^title/) {
-    die "ERROR - could not parse BibTeX title line - are there line breaks in the title? [$line]" unless $line =~ /^title\s=\s\{\{(.+)\}\},\n/;
+    die "ERROR - could not parse BibTeX title line - are there line breaks in the title? [$line]" unless $line =~ /^title\s=\s\{\{(.+)\}\},?\n/;
     my $title = $1;
     my $rawTitle = quotemeta($title);
     $title =~ s/\{//g;
@@ -109,6 +109,10 @@ while (my $line = <BIBTEX>) {
     } else {
         die "\nSomething went horribly wrong at $line\nrawTitle = $rawTitle";
     }
+
+  } elsif ($line =~ /^\@unpublished/) {
+    $line =~ s/unpublished/article/;
+    print OUT $line . "journal = {Submitted.},\n";
 
   } else {
     print OUT $line;
