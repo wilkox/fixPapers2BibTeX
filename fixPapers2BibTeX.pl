@@ -114,6 +114,9 @@ while (my $line = <BIBTEX>) {
     $line =~ s/unpublished/article/;
     print OUT $line . "journal = {Submitted.},\n";
 
+  } elsif ($line =~ /^number/) {
+    next;
+
   } else {
     print OUT $line;
   }
