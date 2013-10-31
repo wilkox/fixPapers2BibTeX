@@ -98,6 +98,7 @@ while (my $line = <BIBTEX>) {
 
     #skip unless the title was stored with a substitute
     unless (exists $title{$title}) {
+      $line =~ s/\xCE\xB4/\\textdelta\{\}/g;
       print OUT $line;
       next;
     }
